@@ -16,25 +16,87 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const { text } = req.body;
-    const createdAt = new Date().toISOString();
-    const updatedAt = new Date().toISOString();
-    
-    db.query('INSERT INTO questions (text, createdAt, updatedAt, isAlive) VALUES (?, ?, ?, ?)', [text, createdAt, updatedAt, true], (err, result) => {
+    const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
+const updatedAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    // Insert the new question with the correct column names
+    db.query('INSERT INTO questions (text, isActive, isAlive, created_at, updated_at) VALUES (?, ?, ?, ?, ?)', 
+        [text, 1, 1, createdAt, updatedAt], // Set default values for isActive and isAlive
+        (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            const newQuestion = { 
+                id: result.insertId, 
+                text, 
+                isActive: 1,  // Default value for isActive
+                isAlive: 0,   // Default value for isAlive
+                createdAt,
+                updatedAt
+            };
+            res.status(201).json(newQuestion); // Respond with the newly created question
+        }
+    );
+});
+
+
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const { text } = req.body;
+    const query = 'UPDATE questions SET text = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ? AND isAlive = TRUE';
+    console.log('Updating question ID:', id, 'with new text:', text);
+    db.query(query, [text, id], (err, result) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        const newQuestion = { 
-            id: result.insertId, 
-            text, 
-            isActive: true,  // default value for isActive
-            isAlive: true,   // default value for isAlive
-            createdAt,
-            updatedAt
-        };
-        res.status(201).json(newQuestion); // Respond with the newly created question
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Question not found or has been deleted' });
+        }
+        res.status(200).json({ message: 'Question updated successfully' });
     });
 });
 
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    const query = 'UPDATE questions SET isAlive = FALSE WHERE id = ? AND isAlive = TRUE';
+    
+    console.log('Soft deleting question ID:', id);
+    db.query(query, [id], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Question not found or has already been deleted' });
+        }
+        res.status(200).json({ message: 'Question deleted successfully' });
+    });
+});
+
+// Toggle isActive state
+router.put('/toggle/:id', (req, res) => {
+    const { id } = req.params;
+    
+    // First, get the current state of isActive
+    db.query('SELECT isActive FROM questions WHERE id = ? AND isAlive = TRUE', [id], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Question not found or has been deleted' });
+        }
+
+        const currentState = results[0].isActive;
+
+        // Toggle the state
+        const newState = !currentState;
+        db.query('UPDATE questions SET isActive = ?, updatedAt = CURRENT_TIMESTAMP WHERE id = ?', [newState, id], (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.status(200).json({ message: 'Question active status updated successfully', isActive: newState });
+        });
+    });
+});
 
 
 module.exports = router;
