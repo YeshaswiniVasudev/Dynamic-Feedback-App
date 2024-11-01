@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import QuestionForm from './QuestionForm';
 import QuestionTable from './QuestionTable';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { Container, Box, Paper, Typography, InputBase } from '@mui/material';
+import { Box, Paper, Typography, InputBase } from '@mui/material';
 
 const AdminDashboard = () => {
     const [questions, setQuestions] = useState([]);
@@ -94,83 +93,73 @@ const AdminDashboard = () => {
     return (
         <Box
             display="flex"
-            justifyContent="center"
-            alignItems="center"
+            flexDirection="column"
+            justifyContent="flex-start" // Align content to the start (top)
             minHeight="100vh"
             sx={{
-                paddingTop: 4,
-                background: 'linear-gradient(to bottom, #FFF4B3, #D3E8D3, #FFFFFF, #D3E8D3, #B2E5FF)',
+                padding: 0, // Remove padding
+                overflow: 'hidden',
             }}
         >
-            <Container maxWidth="md">
-                <Paper elevation={3}>
-                    <Box p={4}>
-                        {/* Title Section */}
-                        <Box
-                            sx={{
-                                backgroundColor: 'grey.200',
-                                padding: '10px',
-                                borderRadius: '5px',
-                                marginBottom: '20px',
-                                textAlign: 'left'
-                            }}
-                        >
-                            {isEditing ? (
-                                <InputBase
-                                    value={title}
-                                    onChange={handleTitleChange}
-                                    onBlur={handleTitleBlur}
-                                    autoFocus
-                                    fullWidth
-                                    sx={{ fontSize: '24px' }}
-                                />
-                            ) : (
-                                <Typography
-                                    variant="h4"
-                                    onClick={handleTitleClick}
-                                    sx={{ cursor: 'pointer' }}
-                                >
-                                    {title}
-                                </Typography>
-                            )}
-                        </Box>
-
-                        {/* Question Form Section */}
-                        <Box
-                            sx={{
-                                backgroundColor: 'grey.200',
-                                padding: '10px',
-                                borderRadius: '5px',
-                                marginBottom: '20px', // Space between title and form
-                            }}
-                        >
-                            <QuestionForm onAdd={handleAddQuestion} />
-                        </Box>
-
-                        {/* Question Table Section */}
-                        <Box
-                            sx={{
-                                backgroundColor: 'grey.200',
-                                padding: '10px',
-                                borderRadius: '5px',
-                                marginBottom: '20px', // Space between title and form
-                            }}
-                        >
-                            <QuestionTable
-                            questions={questions}
-                            onUpdate={handleUpdateQuestion}
-                            onDelete={handleDeleteQuestion}
-                            onToggle={handleToggleActive}
+            <Paper elevation={0} sx={{ width: '100%', padding: 0 }}>
+                {/* Title Section */}
+                <Box
+                    sx={{
+                        backgroundColor: 'grey.200',
+                        padding: '10px',
+                        borderRadius: '5px',
+                        marginBottom: '20px',
+                        textAlign: 'left'
+                    }}
+                >
+                    {isEditing ? (
+                        <InputBase
+                            value={title}
+                            onChange={handleTitleChange}
+                            onBlur={handleTitleBlur}
+                            autoFocus
+                            fullWidth
+                            sx={{ fontSize: '24px' }}
                         />
-                        </Box>
-                        
-                        
-                        <Box mt={3}>
-                            <Link to="/view-feedbacks">View Feedbacks</Link>
-                        </Box>
-                    </Box>
-                </Paper>
-            </Container>
+                    ) : (
+                        <Typography
+                            variant="h4"
+                            onClick={handleTitleClick}
+                            sx={{ cursor: 'pointer' }}
+                        >
+                            {title}
+                        </Typography>
+                    )}
+                </Box>
+
+                {/* Question Form Section */}
+                <Box
+                    sx={{
+                        backgroundColor: 'grey.200',
+                        padding: '10px',
+                        borderRadius: '5px',
+                        marginBottom: '20px', // Space between title and form
+                    }}
+                >
+                    <QuestionForm onAdd={handleAddQuestion} />
+                </Box>
+
+                {/* Question Table Section */}
+                <Box
+                    sx={{
+                        backgroundColor: 'grey.200',
+                        padding: '10px',
+                        borderRadius: '5px',
+                    }}
+                >
+                    <QuestionTable
+                        questions={questions}
+                        onUpdate={handleUpdateQuestion}
+                        onDelete={handleDeleteQuestion}
+                        onToggle={handleToggleActive}
+                    />
+                </Box>
+            </Paper>
         </Box>
     );
 };

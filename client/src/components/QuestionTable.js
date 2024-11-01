@@ -154,15 +154,15 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
                             }}
                           />
                         ) : (
-                          <span
+                            <span
                             style={{
                               display: "block",
                               width: "100%",
-                              height: "100%", // Match height to the TextField
-                              lineHeight: "40px", // Center text vertically
-                              overflow: "hidden", // Prevent overflow
-                              textOverflow: "ellipsis", // Optional: adds ellipsis for long text
-                              whiteSpace: "nowrap", // Prevent text wrapping
+                              height: "auto", // Allow height to adjust to content
+                              lineHeight: "normal", // Default line height
+                              overflow: "visible", // Allow overflow
+                              textOverflow: "clip", // Remove ellipsis
+                              whiteSpace: "normal", // Allow text to wrap to the next line
                               zIndex: 0, // Ensure it stays below input
                               position: "absolute",
                               top: 0,

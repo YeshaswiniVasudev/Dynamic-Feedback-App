@@ -1,14 +1,27 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+  Paper,
+  Grid,
+} from "@mui/material";
 
 const UserPage = () => {
   const [questions, setQuestions] = useState([]);
   const [ratings, setRatings] = useState({});
-  const [name, setName] = useState(""); // State for user name
-  const [email, setEmail] = useState(""); // State for user email
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     // Fetch questions from the backend API
+
+    document.body.style.margin = 0; // Remove default margin
+        document.body.style.height = '100vh'; // Ensure body takes full height
+        document.body.style.background = '#D3E8D3';
     axios
       .get("http://localhost:5000/api/questions/feedbackQuestions")
       .then((response) => {
@@ -31,7 +44,10 @@ const UserPage = () => {
 
     let userId;
     try {
-      const userResponse = await axios.post("http://localhost:5000/api/users", { name, email });
+      const userResponse = await axios.post("http://localhost:5000/api/users", {
+        name,
+        email,
+      });
       userId = userResponse.data.userId;
     } catch (error) {
       console.error("Error inserting user:", error);
@@ -56,47 +72,59 @@ const UserPage = () => {
   };
 
   return (
-    <div>
-      <h2>Feedback Form</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "20px" }}>
-          <label>
-            Name:
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              placeholder="Enter your name"
-            />
-          </label>
-        </div>
-        <div style={{ marginBottom: "20px" }}>
-          <label>
-            Email:
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter your email"
-            />
-          </label>
-        </div>
-        {questions.map((question) => (
-          <div key={question.id} style={{ marginBottom: "20px" }}>
-            <label>{question.text}</label>
-            <StarRating
-              rating={ratings[question.id] || 0}
-              onRatingChange={(rating) =>
-                handleRatingChange(question.id, rating)
-              }
-            />
-          </div>
-        ))}
-        <button type="submit">Submit Feedback</button>
-      </form>
-    </div>
+    <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Paper elevation={3} sx={{ padding: 4 }}>
+        <Typography variant="h4" component="h2" align="center" gutterBottom>
+          Feedback Form
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2} direction="column">
+            <Grid item>
+              <TextField
+                label="Name"
+                variant="outlined"
+                fullWidth
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                placeholder="Enter your name"
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                label="Email"
+                variant="outlined"
+                fullWidth
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+              />
+            </Grid>
+            {questions.map((question) => (
+              <Grid item key={question.id}>
+                <Typography variant="h6">{question.text}</Typography>
+                <StarRating
+                  rating={ratings[question.id] || 0}
+                  onRatingChange={(rating) => handleRatingChange(question.id, rating)}
+                />
+              </Grid>
+            ))}
+            <Grid item>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
+                Submit Feedback
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Paper>
+    </Container>
   );
 };
 
@@ -109,6 +137,8 @@ const StarRating = ({ rating, onRatingChange }) => {
           style={{
             cursor: "pointer",
             color: star <= rating ? "gold" : "gray",
+            fontSize: "24px", // Increase star size for better visibility
+            marginRight: "5px", // Add space between stars
           }}
           onClick={() => onRatingChange(star)}
         >
