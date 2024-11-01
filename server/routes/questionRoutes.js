@@ -24,6 +24,14 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/feedbackQuestions', (req, res) => {
+    db.query('SELECT * FROM questions WHERE isAlive = ? and isActive = ?', [true, true], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
 
 
 

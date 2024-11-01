@@ -2,6 +2,8 @@
 const express = require('express');
 const db = require('./db'); // Import the MySQL connection
 const questionRoutes = require('./routes/questionRoutes');
+const userRoutes = require('./routes/userRoutes');
+const feedbackRoutes = require('./routes/feedbackRoutes');
 const cors = require('cors'); 
 
 
@@ -19,6 +21,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/api/questions', questionRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 
 // Connect to MySQL and start the server
