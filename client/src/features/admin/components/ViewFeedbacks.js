@@ -27,8 +27,8 @@ const ViewFeedbacks = () => {
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [loadingFeedbacks, setLoadingFeedbacks] = useState(false);
   const [error, setError] = useState(null);
-  
 
+  // Fetch users from the API
   const fetchUsers = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/users");
@@ -41,6 +41,7 @@ const ViewFeedbacks = () => {
     }
   };
 
+  // Fetch feedbacks from the API
   const fetchFeedbacks = async (userId) => {
     setLoadingFeedbacks(true);
     try {
@@ -56,18 +57,21 @@ const ViewFeedbacks = () => {
     }
   };
 
+  // Handle user click to open feedback modal
   const handleUserClick = (user) => {
     setSelectedUser(user);
     fetchFeedbacks(user.id);
     setOpenModal(true);
   };
 
+  // Close the modal and reset feedbacks
   const handleCloseModal = () => {
     setOpenModal(false);
     setSelectedUser(null);
     setFeedbacks([]);
   };
 
+  // Fetch users on component mount
   useEffect(() => {
     fetchUsers();
   }, []);

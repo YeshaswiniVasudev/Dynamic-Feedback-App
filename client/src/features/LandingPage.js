@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Container, Typography, Button, Box, Paper } from "@mui/material";
 import { styled } from "@mui/system";
 
+//the reflection effect
 const ReflectiveText = styled("div")({
   position: "relative",
   display: "inline-block",
@@ -17,10 +18,12 @@ const ReflectiveText = styled("div")({
 const LandingPage = () => {
   const navigate = useNavigate();
 
+  //navigate to admin panel
   const handleAdminClick = () => {
     navigate("/admin-panel");
   };
 
+  //navigate to user panel
   const handleUserClick = () => {
     navigate("/User-Page");
   };
@@ -40,6 +43,7 @@ const LandingPage = () => {
         padding: 0,
       }}
     >
+
       <ReflectiveText>
         <Typography
           variant="h3"
@@ -50,6 +54,7 @@ const LandingPage = () => {
         </Typography>
       </ReflectiveText>
       <Box>
+        {/* admin button */}
         <Button
           variant="contained"
           onClick={handleAdminClick}
@@ -65,6 +70,7 @@ const LandingPage = () => {
         >
           Admin
         </Button>
+        {/* user button */}
         <Button
           variant="contained"
           onClick={handleUserClick}

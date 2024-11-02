@@ -5,12 +5,14 @@ import HomeIcon from "@mui/icons-material/Home";
 const ThankYouPage = () => {
   return (
     <Box sx={{ textAlign: "center", mt: 4 }}>
+      {/* Home button to navigate back to the main page */}
       <IconButton
         onClick={() => (window.location.href = "/")}
         sx={{ color: "#4F772D", position: "absolute", top: 16, left: 16 }}
       >
         <HomeIcon fontSize="large" />
       </IconButton>
+      {/* Main thank you message */}
       <Typography
         variant="h4"
         gutterBottom
@@ -18,9 +20,11 @@ const ThankYouPage = () => {
       >
         Thank You for Your Feedback!
       </Typography>
+      {/* Additional message prompting user to submit another response */}
       <Typography variant="body1" gutterBottom>
         We appreciate your input. Would you like to submit another response?
       </Typography>
+      {/* Button to allow the user to submit another response */}
       <Button
         variant="contained"
         sx={{ borderRadius: "8px", mt: 2, backgroundColor: "#4F772D" }}

@@ -27,23 +27,27 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
   const [open, setOpen] = useState({});
   const editInputRef = useRef(null);
 
+  // Focus the input field when editing starts
   useEffect(() => {
     if (isEditingId) {
       editInputRef.current?.focus();
     }
   }, [isEditingId]);
 
+  // Set up editing for a question
   const handleEditClick = (question) => {
     setIsConfirmingDelete(false);
     setIsEditingId(question.id);
     setEditText(question.text);
   };
 
+  // Prepare to delete a question
   const handleDeleteClick = (id) => {
     setQuestionToDelete(id);
     setIsConfirmingDelete(true);
   };
 
+  // Confirm deletion of a question
   const confirmDelete = async () => {
     try {
       await onDelete(questionToDelete);
@@ -57,11 +61,13 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
     }
   };
 
+  // Cancel the delete action
   const cancelDelete = () => {
     setIsConfirmingDelete(false);
     setQuestionToDelete(null);
   };
 
+  // Save the edited question
   const handleSaveEdit = async () => {
     try {
       await axios.put(`http://localhost:5000/api/questions/${isEditingId}`, {
@@ -78,6 +84,7 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
     }
   };
 
+  // Toggle the active state of a question
   const handleToggle = async (id) => {
     try {
       await onToggle(id);
@@ -89,6 +96,7 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
     }
   };
 
+  // Toggle the row expansion for displaying additional information
   const handleRowToggle = (id) => {
     setOpen((prev) => ({ ...prev, [id]: !prev[id] }));
   };
@@ -119,7 +127,7 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
                     <TableCell style={{ width: "300px", position: "relative" }}>
                       <div style={{ position: "relative", height: "40px" }}>
                         {" "}
-                        {/* Fixed height */}
+                        {/* Fixed height for the question text container */}
                         {isEditingId === question.id ? (
                           <TextField
                             inputRef={editInputRef}
@@ -202,6 +210,7 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
                               }}
                             >
                               {question.isActive ? "Active" : "Inactive"}
+                              {/* Display active/inactive status */}
                             </span>
                           }
                           labelPlacement="end"

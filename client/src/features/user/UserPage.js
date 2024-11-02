@@ -16,14 +16,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from "@mui/icons-material/Home";
 
 const UserPage = () => {
-  const [questions, setQuestions] = useState([]);
-  const [ratings, setRatings] = useState({});
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
- 
-  const [errorMessage, setErrorMessage] = useState(null);
-  const navigate = useNavigate();
+  const [questions, setQuestions] = useState([]); // State to hold feedback questions
+  const [ratings, setRatings] = useState({}); // State to store user ratings for questions
+  const [name, setName] = useState(""); // State for user's name
+  const [email, setEmail] = useState(""); // State for user's email
 
+  const [errorMessage, setErrorMessage] = useState(null); // State to manage error messages
+  const navigate = useNavigate(); // Hook for navigation
+
+  // Set up the page style and fetch questions on component mount
   useEffect(() => {
     document.body.style.margin = 0;
     document.body.style.height = "100vh";
@@ -32,7 +33,7 @@ const UserPage = () => {
     axios
       .get("http://localhost:5000/api/questions/feedbackQuestions")
       .then((response) => {
-        setQuestions(response.data);
+        setQuestions(response.data); // Store fetched questions in state
       })
       .catch((error) => {
         console.error("Error fetching questions:", error);
@@ -40,6 +41,7 @@ const UserPage = () => {
   }, []);
 
   const handleRatingChange = (questionId, rating) => {
+    // Update the rating for a specific question
     setRatings((prevRatings) => ({
       ...prevRatings,
       [questionId]: rating,
@@ -47,7 +49,16 @@ const UserPage = () => {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); // Prevent default form submission behavior
+
+    // Check if all questions have ratings
+    const allRated = questions.every(
+      (question) => ratings[question.id] !== undefined
+    );
+    if (!allRated) {
+      setErrorMessage("Please provide a rating for all questions.");
+      return;
+    }
 
     let userId;
     try {
@@ -57,6 +68,7 @@ const UserPage = () => {
       });
       userId = userResponse.data.userId;
     } catch (error) {
+      // Handle errors related to user creation
       if (error.response && error.response.status === 409) {
         setErrorMessage("You have already submitted feedback.");
       } else {
@@ -71,22 +83,25 @@ const UserPage = () => {
     }));
 
     try {
+      // Submit the feedback to the server
       await axios.post("http://localhost:5000/api/feedback", {
         feedback,
         userId,
       });
 
+      // Reset state after successful submission
       setName("");
       setEmail("");
       setRatings({});
       setErrorMessage(null);
-      navigate('/thank-you');
+      navigate("/thank-you");
     } catch (error) {
       setErrorMessage("Error submitting feedback. Please try again.");
     }
   };
 
   const handleCloseError = () => {
+    // Clear error message and reset input fields
     setErrorMessage(null);
     setName("");
     setEmail("");
@@ -95,6 +110,7 @@ const UserPage = () => {
 
   return (
     <Box sx={{ position: "relative", minHeight: "100vh" }}>
+      {/* Home button to navigate back to the main page */}
       <IconButton
         onClick={() => (window.location.href = "/")}
         sx={{ position: "absolute", top: 0, left: 16, color: "#4F772D" }}
@@ -114,8 +130,7 @@ const UserPage = () => {
             Your Feedback Shapes Our Future
           </Typography>
 
-          
-
+          {/* Display error message if present */}
           {errorMessage && (
             <Alert
               severity="error"
@@ -132,6 +147,7 @@ const UserPage = () => {
 
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} direction="column">
+              {/* Input for user's name */}
               <Grid item>
                 <TextField
                   label="Name"
@@ -144,6 +160,7 @@ const UserPage = () => {
                 />
               </Grid>
               <Grid item>
+                {/* Input for user's email */}
                 <TextField
                   label="Email"
                   variant="outlined"
@@ -155,6 +172,7 @@ const UserPage = () => {
                   placeholder="Enter your email"
                 />
               </Grid>
+              {/* Render questions and associated star ratings */}
               {questions.map((question) => (
                 <Grid item key={question.id}>
                   <Typography variant="h6">{question.text}</Typography>
@@ -167,6 +185,7 @@ const UserPage = () => {
                 </Grid>
               ))}
               <Grid item>
+                {/* Submit button */}
                 <Button
                   type="submit"
                   variant="contained"
@@ -192,6 +211,7 @@ const UserPage = () => {
   );
 };
 
+// StarRating component to allow users to provide ratings visually
 const StarRating = ({ rating, onRatingChange }) => {
   const [hoveredStar, setHoveredStar] = useState(0);
 

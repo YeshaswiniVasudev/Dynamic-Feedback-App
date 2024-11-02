@@ -6,9 +6,11 @@ import { Box, TextField, Button } from "@mui/material";
 const QuestionForm = ({ onAdd }) => {
   const [questionText, setQuestionText] = useState("");
 
+  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();// Prevent default form submission behavior
     try {
+      // Send a POST request to add a new question
       const response = await axios.post("http://localhost:5000/api/questions", {
         text: questionText,
       });

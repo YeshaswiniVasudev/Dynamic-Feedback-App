@@ -1,7 +1,9 @@
+//Admin Panel
+// Import necessary dependencies and components
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminDashboard from "./AdminDashboard";
-import FeedbackTable from "./ViewFeedbacks";
+import AdminDashboard from "./components/AdminDashboard";
+import FeedbackTable from "./components/ViewFeedbacks";
 import {
   Box,
   Button,
@@ -13,9 +15,11 @@ import {
 import HomeIcon from "@mui/icons-material/Home";
 
 const AdminPanel = () => {
+  // State to track the currently selected view (questions or feedback)
   const [view, setView] = useState("questions");
   const navigate = useNavigate();
 
+  // Effect to set initial styles for the document body
   useEffect(() => {
     document.body.style.margin = 0;
     document.body.style.height = "100vh";
@@ -24,6 +28,7 @@ const AdminPanel = () => {
 
   return (
     <Box sx={{ position: "relative", minHeight: "100vh" }}>
+      {/* Home button to navigate back to the main page */}
       <IconButton
         onClick={() => navigate("/")}
         sx={{ position: "absolute", top: 16, left: 16, color: "#4F772D" }}
@@ -40,9 +45,11 @@ const AdminPanel = () => {
           flexDirection: "column",
         }}
       >
+        {/* Button group to switch between different views */}
         <Box display="flex" alignItems="center" mt={4} mb={3}>
           <Box flexGrow={1} display="flex" justifyContent="center">
             <ButtonGroup variant="contained" color="primary" spacing={1}>
+              {/* Button to view questions */}
               <Button
                 onClick={() => setView("questions")}
                 sx={{
@@ -56,6 +63,7 @@ const AdminPanel = () => {
               >
                 Questions
               </Button>
+              {/* Button to view feedbacks */}
               <Button
                 onClick={() => setView("feedbacks")}
                 sx={{
@@ -72,7 +80,7 @@ const AdminPanel = () => {
             </ButtonGroup>
           </Box>
         </Box>
-
+        {/* Main content area for displaying selected view */}
         <Paper
           elevation={3}
           sx={{

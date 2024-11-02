@@ -1,10 +1,10 @@
 // App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LandingPage from "./components/LandingPage";
-import AdminPanel from "./components/AdminPanel";
-import UserPage from "./components/UserPage";
-import ThankYou from "./components/ThankYou";
+import LandingPage from "./features/LandingPage";
+import AdminPanel from "./features/admin/AdminPanel";
+import UserPage from "./features/user/UserPage";
+import ThankYou from "./features/user/ThankYou";
 
 function App() {
   return (

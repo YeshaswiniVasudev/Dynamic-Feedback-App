@@ -1,3 +1,4 @@
+//make the necessary imports
 import React, { useState, useEffect } from "react";
 import QuestionForm from "./QuestionForm";
 import QuestionTable from "./QuestionTable";
@@ -5,8 +6,9 @@ import axios from "axios";
 import { Box, Paper, Typography } from "@mui/material";
 
 const AdminDashboard = () => {
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState([]); //state to hold the list of questions
 
+  //api call to ftech the questions
   const fetchQuestions = async () => {
     try {
       const response = await axios.get("http://localhost:5000/api/questions");
@@ -16,6 +18,7 @@ const AdminDashboard = () => {
     }
   };
 
+  // Function to handle adding a new question
   const handleAddQuestion = (newQuestion) => {
     const formatter = new Intl.DateTimeFormat("en-US", {
       dateStyle: "medium",
@@ -32,6 +35,7 @@ const AdminDashboard = () => {
     setQuestions((prevQuestions) => [...prevQuestions, enhancedQuestion]);
   };
 
+  //function to handle updating a question
   const handleUpdateQuestion = (id, updatedText) => {
     const formatter = new Intl.DateTimeFormat("en-US", {
       dateStyle: "medium",
@@ -47,12 +51,14 @@ const AdminDashboard = () => {
     );
   };
 
+  // Function to handle deleting a question from the state
   const onDelete = (id) => {
     setQuestions((prevQuestions) =>
       prevQuestions.filter((question) => question.id !== id)
     );
   };
 
+  // Function to handle deleting a question from the server
   const handleDeleteQuestion = async (id) => {
     try {
       await axios.delete(`http://localhost:5000/api/questions/${id}`);
@@ -62,6 +68,7 @@ const AdminDashboard = () => {
     }
   };
 
+  // Function to toggle the active state of a question
   const handleToggleActive = async (id) => {
     try {
       const response = await axios.put(
@@ -78,6 +85,7 @@ const AdminDashboard = () => {
     }
   };
 
+  // useEffect to fetch questions when the component mounts
   useEffect(() => {
     fetchQuestions();
   }, []);
