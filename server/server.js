@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://feedback-dp70270z4-yeshaswini-vasudeva-murthys-projects.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
