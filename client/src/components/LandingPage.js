@@ -2,12 +2,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Typography, Button, Box, Paper } from "@mui/material";
+import { styled } from "@mui/system";
+
+const ReflectiveText = styled("div")({
+  position: "relative",
+  display: "inline-block",
+  color: "#000",
+  WebkitBoxReflect:
+    "below -50px linear-gradient(transparent, rgba(255, 255, 255, 0.1))",
+
+  textShadow: "0 1px 1px rgba(255, 255, 255, 0.5)",
+});
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   const handleAdminClick = () => {
-    navigate("/admin-panel"); // Route to admin dashboard
+    navigate("/admin-panel");
   };
 
   const handleUserClick = () => {
@@ -18,7 +29,7 @@ const LandingPage = () => {
     <Container
       component={Paper}
       elevation={3}
-      maxWidth={false} // Remove default maxWidth
+      maxWidth={false}
       sx={{
         height: "100vh",
         display: "flex",
@@ -26,12 +37,18 @@ const LandingPage = () => {
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#D3E8D3",
-        padding: 0, // Remove padding
+        padding: 0,
       }}
     >
-      <Typography variant="h3" gutterBottom>
-        Welcome to the App
-      </Typography>
+      <ReflectiveText>
+        <Typography
+          variant="h3"
+          gutterBottom
+          sx={{ fontFamily: '"Tahoma", sans-serif' }}
+        >
+          Welcome to Your Feedback Hub!
+        </Typography>
+      </ReflectiveText>
       <Box>
         <Button
           variant="contained"
@@ -39,10 +56,10 @@ const LandingPage = () => {
           sx={{
             margin: "10px",
             padding: "10px 20px",
-            backgroundColor: "#90A955", // Set custom background color
-            color: "#000", // Set custom text color if needed
+            backgroundColor: "#4F772D",
+            color: "#FFFFFF",
             "&:hover": {
-              backgroundColor: "#4F772D", // Optional: set a hover color
+              backgroundColor: "#4F772D",
             },
           }}
         >
@@ -54,10 +71,10 @@ const LandingPage = () => {
           sx={{
             margin: "10px",
             padding: "10px 20px",
-            backgroundColor: "#90A955", // Set custom background color
-            color: "#000", // Set custom text color if needed
+            backgroundColor: "#4F772D",
+            color: "#FFFFFF",
             "&:hover": {
-              backgroundColor: "#4F772D", // Optional: set a hover color
+              backgroundColor: "#4F772D",
             },
           }}
         >

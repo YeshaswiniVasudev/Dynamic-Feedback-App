@@ -24,12 +24,12 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
   const [editText, setEditText] = useState("");
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const [questionToDelete, setQuestionToDelete] = useState(null);
-  const [open, setOpen] = useState({}); // State to manage which rows are expanded
+  const [open, setOpen] = useState({});
   const editInputRef = useRef(null);
 
   useEffect(() => {
     if (isEditingId) {
-      editInputRef.current?.focus(); // Focus the input when editing starts
+      editInputRef.current?.focus();
     }
   }, [isEditingId]);
 
@@ -40,15 +40,15 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
   };
 
   const handleDeleteClick = (id) => {
-    setQuestionToDelete(id); // Set the question ID to delete
-    setIsConfirmingDelete(true); // Show the confirmation modal
+    setQuestionToDelete(id);
+    setIsConfirmingDelete(true);
   };
 
   const confirmDelete = async () => {
     try {
-      await onDelete(questionToDelete); // Call the delete function
-      setIsConfirmingDelete(false); // Hide the modal after deletion
-      setQuestionToDelete(null); // Clear the question ID
+      await onDelete(questionToDelete);
+      setIsConfirmingDelete(false);
+      setQuestionToDelete(null);
     } catch (error) {
       console.error(
         "Error deleting question:",
@@ -58,8 +58,8 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
   };
 
   const cancelDelete = () => {
-    setIsConfirmingDelete(false); // Hide the modal without deleting
-    setQuestionToDelete(null); // Clear the question ID
+    setIsConfirmingDelete(false);
+    setQuestionToDelete(null);
   };
 
   const handleSaveEdit = async () => {
@@ -80,7 +80,7 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
 
   const handleToggle = async (id) => {
     try {
-      await onToggle(id); // Call the onToggle prop function with the question ID
+      await onToggle(id);
     } catch (error) {
       console.error(
         "Error toggling active state:",
@@ -90,7 +90,7 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
   };
 
   const handleRowToggle = (id) => {
-    setOpen((prev) => ({ ...prev, [id]: !prev[id] })); // Toggle the open state for the row
+    setOpen((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   return (
@@ -125,10 +125,10 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
                             inputRef={editInputRef}
                             value={editText}
                             onChange={(e) => setEditText(e.target.value)}
-                            onBlur={handleSaveEdit} // Save on blur
+                            onBlur={handleSaveEdit}
                             onKeyPress={(e) => {
                               if (e.key === "Enter") {
-                                handleSaveEdit(); // Save on Enter
+                                handleSaveEdit();
                               }
                             }}
                             variant="outlined"
@@ -138,32 +138,32 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
                               position: "absolute",
                               top: 0,
                               left: 0,
-                              zIndex: 1, // Ensure it's above static text
-                              backgroundColor: "white", // Set background color to white
+                              zIndex: 1,
+                              backgroundColor: "white",
                               "& .MuiOutlinedInput-root": {
                                 "& fieldset": {
-                                  border: "none", // Remove border
+                                  border: "none",
                                 },
                                 "&:hover fieldset": {
-                                  border: "none", // Remove border on hover
+                                  border: "none",
                                 },
                                 "&.Mui-focused fieldset": {
-                                  border: "none", // Remove border when focused
+                                  border: "none",
                                 },
                               },
                             }}
                           />
                         ) : (
-                            <span
+                          <span
                             style={{
                               display: "block",
                               width: "100%",
-                              height: "auto", // Allow height to adjust to content
-                              lineHeight: "normal", // Default line height
-                              overflow: "visible", // Allow overflow
-                              textOverflow: "clip", // Remove ellipsis
-                              whiteSpace: "normal", // Allow text to wrap to the next line
-                              zIndex: 0, // Ensure it stays below input
+                              height: "auto",
+                              lineHeight: "normal",
+                              overflow: "visible",
+                              textOverflow: "clip",
+                              whiteSpace: "normal",
+                              zIndex: 0,
                               position: "absolute",
                               top: 0,
                               left: 0,
