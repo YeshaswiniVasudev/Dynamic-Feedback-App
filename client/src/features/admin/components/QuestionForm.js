@@ -11,7 +11,7 @@ const QuestionForm = ({ onAdd }) => {
     e.preventDefault();// Prevent default form submission behavior
     try {
       // Send a POST request to add a new question
-      const response = await axios.post("http://localhost:5000/api/questions", {
+      const response = await axios.post(process.env.REACT_APP_SERVER_URL+"/api/questions", {
         text: questionText,
       });
       onAdd(response.data);

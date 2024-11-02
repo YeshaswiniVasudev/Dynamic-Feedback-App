@@ -31,7 +31,7 @@ const ViewFeedbacks = () => {
   // Fetch users from the API
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/users");
+      const response = await axios.get(process.env.REACT_APP_SERVER_URL+"/api/users");
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -46,7 +46,7 @@ const ViewFeedbacks = () => {
     setLoadingFeedbacks(true);
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/feedback/${userId}`
+        process.env.REACT_APP_SERVER_URL+`/api/feedback/${userId}`
       );
       setFeedbacks(response.data);
     } catch (error) {

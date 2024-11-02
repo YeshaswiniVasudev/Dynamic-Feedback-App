@@ -11,7 +11,7 @@ const AdminDashboard = () => {
   //api call to ftech the questions
   const fetchQuestions = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/questions");
+      const response = await axios.get(process.env.REACT_APP_SERVER_URL+"/api/questions");
       setQuestions(response.data);
     } catch (error) {
       console.error("Error fetching questions:", error);
@@ -61,7 +61,7 @@ const AdminDashboard = () => {
   // Function to handle deleting a question from the server
   const handleDeleteQuestion = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/questions/${id}`);
+      await axios.delete(process.env.REACT_APP_SERVER_URL+`/api/questions/${id}`);
       onDelete(id);
     } catch (error) {
       console.error("Error deleting question:", error);
@@ -72,7 +72,7 @@ const AdminDashboard = () => {
   const handleToggleActive = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/questions/toggle/${id}`
+        process.env.REACT_APP_SERVER_URL+`/api/questions/toggle/${id}`
       );
       const newStatus = response.data.isActive;
       setQuestions((prevQuestions) =>

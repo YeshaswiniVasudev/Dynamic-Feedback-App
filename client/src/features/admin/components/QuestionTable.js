@@ -70,7 +70,7 @@ const QuestionTable = ({ questions, onUpdate, onDelete, onToggle }) => {
   // Save the edited question
   const handleSaveEdit = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/questions/${isEditingId}`, {
+      await axios.put(process.env.REACT_APP_SERVER_URL+`/api/questions/${isEditingId}`, {
         text: editText,
       });
       onUpdate(isEditingId, editText);

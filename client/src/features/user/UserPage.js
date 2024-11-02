@@ -31,7 +31,7 @@ const UserPage = () => {
     document.body.style.background = "#D3E8D3";
 
     axios
-      .get("http://localhost:5000/api/questions/feedbackQuestions")
+      .get(process.env.REACT_APP_SERVER_URL+"/api/questions/feedbackQuestions")
       .then((response) => {
         setQuestions(response.data); // Store fetched questions in state
       })
@@ -62,7 +62,7 @@ const UserPage = () => {
 
     let userId;
     try {
-      const userResponse = await axios.post("http://localhost:5000/api/users", {
+      const userResponse = await axios.post(process.env.REACT_APP_SERVER_URL+"/api/users", {
         name,
         email,
       });
@@ -84,7 +84,7 @@ const UserPage = () => {
 
     try {
       // Submit the feedback to the server
-      await axios.post("http://localhost:5000/api/feedback", {
+      await axios.post(process.env.REACT_APP_SERVER_URL+"/api/feedback", {
         feedback,
         userId,
       });
